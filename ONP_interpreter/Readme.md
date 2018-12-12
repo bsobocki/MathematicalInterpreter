@@ -58,11 +58,11 @@ If you want to:
     ```
     This command ends the program.
   * see infix expression of the postfix expression you enter:
-  ```
-  infix
-  ```
-  Fr example command:
-  ```
-  infix 3 2 8 * + 7 x / -
-  ```
-  return infix expression : `3.0 + 2.0 * 8.0 - 7.0 / x`.
+    ```
+    infix
+    ```
+    For example command:
+    ```
+    infix 3 2 8 * + 7 x / -
+    ```
+    return infix expression : `3.0 + 2.0 * 8.0 - 7.0 / x`.
