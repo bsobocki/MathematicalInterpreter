@@ -1,5 +1,5 @@
 # MathematicalInterpreter
-Interpreter and calculator of some expressions (like postfix expressions or derivatives) commands.
+Calculator of some expressions (like postfix expressions or derivatives) and commands interpreter.
 
 ## To Do
 - add derivative interpreter
