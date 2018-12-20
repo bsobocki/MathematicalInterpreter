@@ -12,6 +12,11 @@ public abstract class TwoArgs extends Function {
     TwoArgs(int priority){
         super(priority);
     }
+    TwoArgs(Symbol arg1, Symbol arg2,int priority){
+        super(priority);
+        this.arg1 = arg1;
+        this.arg2 = arg2;
+    }
 
     void check() throws ONP_Exception {
         if (arg2==null || arg1==null) {
@@ -50,9 +55,17 @@ public abstract class TwoArgs extends Function {
             throw new ONP_TooManyArguments();
     }
 
-
     @Override
     public String toString() {
         return write(name);
+    }
+
+    // GETTERS
+
+    public Symbol getArg1(){
+        return arg1;
+    }
+    public Symbol getArg2(){
+        return arg2;
     }
 }

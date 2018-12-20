@@ -1,8 +1,12 @@
 package interpreter.symbol.function.twoArgs;
 
 import ONP_interpreter.tools.exceptions.*;
+import interpreter.symbol.Symbol;
 
 public class Divide extends TwoArgs {
+    public Divide (Symbol a1, Symbol a2){
+        super(a1,a2,4);
+    }
     public Divide() {
         super(4);
         name = "/";

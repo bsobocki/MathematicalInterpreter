@@ -11,6 +11,10 @@ public abstract class OneArg extends Function {
     public OneArg() {
         super(5);
     }
+    public OneArg(Symbol arg){
+        super(5);
+        this.arg = arg;
+    }
 
     void check() throws ONP_Exception {
         if (arg==null)
@@ -38,5 +42,9 @@ public abstract class OneArg extends Function {
     @Override
     public String toString(){
         return "" + name + "( " + arg.toString() + " )";
+    }
+
+    public Symbol getArg(){
+        return arg;
     }
 }

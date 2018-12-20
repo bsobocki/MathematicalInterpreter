@@ -1,6 +1,5 @@
 package interpreter;
 
-import ONP_interpreter.tools.exceptions.ONP_Exception;
 import java.util.Scanner;
 
 public interface Interpreter {
@@ -38,7 +37,7 @@ public interface Interpreter {
                     }
                 }
             }
-        } catch (ONP_Exception exc) {
+        } catch (Exception exc) {
             System.out.println("Error: " + exc.getClass() + "   message: " + exc.getMessage());
             interpret(body,interpreterName);
         }
@@ -85,7 +84,7 @@ public interface Interpreter {
     }
 
     /* INTERFACE */
-
+    //to create the interpreter body
     interface InterpreterBody{
         void body(String command, String arg);
     }

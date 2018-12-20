@@ -1,9 +1,13 @@
 package interpreter.symbol.function.oneArg;
 
 import ONP_interpreter.tools.exceptions.ONP_Exception;
+import interpreter.symbol.Symbol;
 
 public class Sgn extends OneArg {
 
+    public Sgn(Symbol arg){
+        super(arg);
+    }
     public Sgn(){
         name = "sgn";
     }

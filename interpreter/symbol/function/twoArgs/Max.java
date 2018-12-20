@@ -1,8 +1,13 @@
 package interpreter.symbol.function.twoArgs;
 
 import ONP_interpreter.tools.exceptions.ONP_Exception;
+import interpreter.symbol.Symbol;
 
 public class Max extends TwoArgs {
+
+    public Max (Symbol a1, Symbol a2){
+        super(a1,a2,5);
+    }
     public Max() {
         super(5);
     }

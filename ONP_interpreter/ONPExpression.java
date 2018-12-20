@@ -159,7 +159,7 @@ public class ONPExpression {
                     /*assign*/
                     case "=":
                         Assign a = new Assign();
-                        a.addArg1(new Variable(expr.remove()));
+                        a.addArg1(new Variable(expr.remove(),0));
                         Symbol c = build();
                         a.addArg(c);
                         set = a.assign(set);
@@ -167,7 +167,10 @@ public class ONPExpression {
 
                     /*variable*/
                     default:
-                        return new Number(set.get(x));
+                        if(set.get(x)!=null)
+                            return new Variable(x,set.get(x));
+                        else
+                            throw new ONP_UnknownSymbol();
                 }
         }
         else

@@ -11,10 +11,12 @@ import java.util.regex.Pattern;
 
 public class Variable extends Symbol {
     private String name;
+    private double val;
     private static ONP_Set vars = new ONP_Set();
 
-    public Variable(String name){
+    public Variable(String name, double v){
         super(5);
+        val = v;
         Pattern pat = Pattern.compile("\\p{Alpha}\\p{Alnum}*");
         Matcher mat = pat.matcher(name);
         if(mat.matches()) {
@@ -29,7 +31,7 @@ public class Variable extends Symbol {
 
     @Override
     public double calc() throws ONP_Exception {
-        return 0;
+        return val;
     }
 
     @Override

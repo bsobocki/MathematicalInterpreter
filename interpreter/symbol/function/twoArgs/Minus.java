@@ -1,8 +1,13 @@
 package interpreter.symbol.function.twoArgs;
 
 import ONP_interpreter.tools.exceptions.ONP_Exception;
+import interpreter.symbol.Symbol;
 
 public class Minus extends TwoArgs {
+
+    public Minus (Symbol a1, Symbol a2){
+        super(a1,a2,3);
+    }
     public Minus() {
         super(3);
         name = "-";
