@@ -79,41 +79,23 @@ public class ONPExpression {
 
                     /*function 1-arg*/
                     case "abs":
-                        Abs abs = new Abs();
-                        abs.addArg(build());
-                        return abs;
+                        return new Abs(build());
                     case "atan":
-                        Atan at = new Atan();
-                        at.addArg(build());
-                        return at;
+                        return new Atan(build());
                     case "ceil":
-                        Ceil ce = new Ceil();
-                        ce.addArg(build());
-                        return ce;
+                        return new Ceil(build());
                     case "cos":
-                        Cos co = new Cos();
-                        co.addArg(build());
-                        return co;
+                        return new Cos(build());
                     case "exp":
-                        Exp exp = new Exp();
-                        exp.addArg(build());
-                        return exp;
+                        return new Exp(build());
                     case "floor":
-                        Floor floor = new Floor();
-                        floor.addArg(build());
-                        return floor;
+                        return new Floor(build());
                     case "ln":
-                        Ln ln = new Ln();
-                        ln.addArg(build());
-                        return ln;
+                        return new Ln(build());
                     case "sgn":
-                        Sgn sgn = new Sgn();
-                        sgn.addArg(build());
-                        return sgn;
+                        return new Sgn(build());
                     case "sin":
-                        Sin sin = new Sin();
-                        sin.addArg(build());
-                        return sin;
+                        return new Sin(build());
 
                     /*function 2-args*/
                     case "+":
