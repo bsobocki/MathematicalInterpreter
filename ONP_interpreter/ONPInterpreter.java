@@ -31,7 +31,7 @@ public class ONPInterpreter implements Interpreter {
                             System.out.println("Wrong command!");
                     }
                 },
-                /*the name of the ONPInterpreter */
-                "ONPInterpreter");
+                /* the name of the ONPInterpreter */
+                "onp-calculator");
     }
 }

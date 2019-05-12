@@ -1,59 +1,71 @@
 package derivative_interpreter;
 
 import function.FunctionTree;
-import interpreter.symbol.Symbol;
-import interpreter.symbol.function.constant.*;
-import interpreter.symbol.function.oneArg.*;
-import interpreter.symbol.function.twoArgs.*;
-import interpreter.symbol.operand.*;
-import interpreter.symbol.operand.Number;
+import function.symbol.*;
+import function.symbol.function.constant.*;
+import function.symbol.function.oneArg.*;
+import function.symbol.function.twoArgs.*;
+import function.symbol.operand.*;
+import function.symbol.operand.Number;
 
-class Derivative {
+public class Derivative {
     /**function representation*/
     private double value;
     private String representation;
     private Symbol function;
     private Symbol derivative;
 
-    //CONSTRUCTOR
-    Derivative(String f) throws Exception {
-        function = new FunctionTree(f).getFun();
-        derivative = buildDer(function);
-        value = derivative.calc();
-        representation = function.toString();
+    //CONSTRUCTORS
+    public Derivative() {
+        function = null;
+        derivative = null;
+        value = 0;
+        representation = null;
+    }
+    public Derivative(String f) throws Exception {
+        setFunction(f);
     }
     //GETTERS
     public double getValue() { return value; }
     public Symbol getDerivative() { return derivative; }
     public Symbol getFunction() { return function; }
+    //SETTERS
+    void setFunction(String f) throws Exception{
+        function = new FunctionTree(f).getFun();
+        derivative = buildDer(function);
+        value = derivative.calc();
+        representation = derivative.toString();
+    }
     //BUILDERS
     /**derivative reprezentation of the function as value*/
     private Symbol buildDer(Symbol function) throws Exception {
         //Null
         if (function==null)
             return new Number(0);
+        //Number
+        if (function.getClass().isAssignableFrom(Number.class))
+            return new Number(0);
         //Constant
-        else if (function.getClass().isAssignableFrom(Constant.class))
+        if (function.getClass().isAssignableFrom(Constant.class))
             return new Number(0);
         //Variable
-        else if (function.getClass().isAssignableFrom(Variable.class))
+        if (function.getClass().isAssignableFrom(Variable.class))
             return new Number(1);
         //oneArg
-        else if (function.getClass().isAssignableFrom(OneArg.class))
+        if (function.getClass().isAssignableFrom(OneArg.class))
             return build1ArgDer((OneArg)function);
         //twoArgs
-        else
-            return build2ArgDer((TwoArgs)function);
-
+        return build2ArgDer((TwoArgs)function);
     }
     private Symbol build2ArgDer(TwoArgs function) throws Exception{
-        TwoArgs f = (TwoArgs) function.getArg1();
-        TwoArgs g = (TwoArgs) function.getArg2();
+        Symbol f = function.getArg1();
+        Symbol g = function.getArg2();
         //Plus
-        if(function.getClass().isAssignableFrom(Plus.class))
+        if(function.getClass().isAssignableFrom(Plus.class)) {
             return new Plus(
-                    buildDer(f) ,
-                    buildDer(g) );
+                    buildDer(f),
+                    buildDer(g));
+        }
         //Minus
         else if (function.getClass().isAssignableFrom(Minus.class))
             return new Minus (

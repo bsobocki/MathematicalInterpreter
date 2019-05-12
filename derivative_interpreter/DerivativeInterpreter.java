@@ -1,5 +1,6 @@
 package derivative_interpreter;
 
+import function.FunctionTree;
 import interpreter.Interpreter;
 
 /**
@@ -12,18 +13,30 @@ public class DerivativeInterpreter implements Interpreter {
         Interpreter.interpret(
                 /*the DerivativeInterpreter's body */
                 (String command, String arg) -> {
+                    Derivative der = new Derivative();
                     /*commands interpretation */
                     switch (command) {
                         case "calc":
-
+                            //try {
+                                der.setFunction(arg);
+                                System.out.println(der.getDerivative().toString());
+                            //} catch (Exception e) {
+                                //System.out.println("Message : " + e.getMessage());
+                            //}
                             break;
-                        case "clear":
-
+                        case "last-der":
+                            if(der.getDerivative()!=null)
+                                System.out.println(der.getDerivative().toString());
+                            else
+                                System.out.println("Nothing to print!");
+                            break;
+                        case "last-fun":
+                            if(der.getFunction()!=null)
+                                System.out.println(der.getFunction().toString());
+                            else
+                                System.out.println("Nothing to print!");
                             break;
                         case "args":
-
-                            break;
-                        case "infix":
 
                             break;
                         default:
@@ -31,6 +44,6 @@ public class DerivativeInterpreter implements Interpreter {
                     }
                 },
                 /*the name of the DerivativeInterpreter*/
-                "DerivativeInterpreter");
+                "derivative-calculator");
     }
 }

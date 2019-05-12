@@ -1,29 +1,29 @@
 package ONP_interpreter;
 
-import ONP_interpreter.tools.collections.*;
-import ONP_interpreter.tools.exceptions.*;
-import interpreter.symbol.Symbol;
-import interpreter.symbol.function.twoArgs.*;
-import interpreter.symbol.function.oneArg.*;
-import interpreter.symbol.function.constant.*;
-import interpreter.symbol.operand.*;
-import interpreter.symbol.operand.Number;
+import interpreter.collections.*;
+import ONP_interpreter.exceptions.*;
+import function.symbol.*;
+import function.symbol.function.twoArgs.*;
+import function.symbol.function.oneArg.*;
+import function.symbol.function.constant.*;
+import function.symbol.operand.*;
+import function.symbol.operand.Number;
 
 /**a class that storages an expression*/
 public class ONPExpression {
     /**collections necessary to calculate*/
-    private ONP_Set set;
-    private ONP_List expr;
+    private Set set;
+    private List expr;
     private Symbol treeExpression;
 
     /**constructors*/
     public ONPExpression() throws ONP_Exception{
-        set = new ONP_Set();
-        expr = new ONP_List();
+        set = new Set();
+        expr = new List();
     }
     public ONPExpression(String onp) throws ONP_Exception{
-        set = new ONP_Set();
-        expr = new ONP_List();
+        set = new Set();
+        expr = new List();
         setExpression(onp);
     }
     public void setExpression(String onp) throws ONP_Exception {
@@ -31,12 +31,12 @@ public class ONPExpression {
         treeExpression = build();
     }
 
-    /**method creates ONP_List which storages an prefix expressioin*/
-    public static ONP_List onp_symbols_prefix(String str){
+    /**method creates List which storages an prefix expressioin*/
+    public static List onp_symbols_prefix(String str){
         /*to build an single symbol*/
         String temp = "";
         /*to build an postfix expression and reverse it*/
-        ONP_List arrayList = new ONP_List();
+        List arrayList = new List();
         /*string to char array*/
         char[] charArray = str.toCharArray();
 
@@ -166,7 +166,7 @@ public class ONPExpression {
     }
 
     /**getter*/
-    public ONP_Set getSet() {
+    public Set getSet() {
         return set;
     }
     public Symbol getTreeExpression() {

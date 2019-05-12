@@ -1,0 +1,19 @@
+package function.symbol.function.constant;
+
+import function.symbol.Symbol;
+
+public abstract class Constant extends Symbol{
+    public Constant() {
+        super(5);
+    }
+
+    @Override
+    public String toString(){
+        return "" + calc();
+    }
+
+    @Override
+    public String toString2(){
+        return "" + calc();
+    }
+}

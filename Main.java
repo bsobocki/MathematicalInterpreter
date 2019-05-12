@@ -1,12 +1,22 @@
 import ONP_interpreter.ONPInterpreter;
+import calculator_interpreter.CalcInterpreter;
+import derivative_interpreter.Derivative;
 import derivative_interpreter.DerivativeInterpreter;
+import function.FunctionTree;
 import interpreter.Interpreter;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *Created by Bartosz Sobocki
  */
 
 public class Main {
+
+    public static void printHelp(){
+        System.out.println("");
+    }
 
    public static void main(String[] args ){
        /*
@@ -21,6 +31,9 @@ public class Main {
                        /*the body of the Interpreter */
                        (String command, String arg) -> {
                            switch(command){
+                               case "calculator":
+                                   new CalcInterpreter().interpreter();
+                                   break;
                                case "onp" :
                                    new ONPInterpreter().interpreter();
                                    break;
@@ -29,16 +42,21 @@ public class Main {
                                    break;
                                case "commands":
                                    System.out.println(
+                                           "calculator -> open CalcInterpreter\n" +
                                            "onp -> open ONPInterpreter\n" +
                                            "derivative -> open DerivativeInterpreter\n" +
-                                           "commands -> show all available commands\n");
+                                           "commands -> show all available commands\n" +
+                                           "help -> descriptions of available functions\n");
+                                   break;
+                               case "help":
+                                   printHelp();
                                    break;
                                 default:
                                     System.out.println("Wrong command!");
                            }
                    },
                        /*the name of the Interpreter */
-                       "Main Interpreter");
+                       "interpreter");
        interpreter.interpreter();
    }
 }
