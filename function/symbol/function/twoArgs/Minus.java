@@ -7,10 +7,11 @@ public class Minus extends TwoArgs {
 
     public Minus (Symbol a1, Symbol a2){
         super(a1,a2,3);
+        name ="-";
     }
     public Minus() {
         super(3);
-        name = "-";
+        name ="-";
     }
 
     @Override

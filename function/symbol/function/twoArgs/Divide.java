@@ -6,10 +6,11 @@ import ONP_interpreter.exceptions.*;
 public class Divide extends TwoArgs {
     public Divide (Symbol a1, Symbol a2){
         super(a1,a2,4);
+        name ="/";
     }
     public Divide() {
         super(4);
-        name = "/";
+        name ="/";
     }
 
     @Override

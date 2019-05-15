@@ -7,10 +7,11 @@ public class Multiply extends TwoArgs {
 
     public Multiply (Symbol a1, Symbol a2){
         super(a1,a2,4);
+        name ="*";
     }
     public Multiply() {
         super(4);
-        name = "*";
+        name ="*";
     }
 
     @Override

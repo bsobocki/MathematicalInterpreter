@@ -81,33 +81,6 @@ public class FunctionTree {
     }
 
     //METHODS
-    Symbol make_ONP(Stack<FunctionSymbol> stack, ArrayDeque<FunctionSymbol> queue){
-        StringBuilder str = new StringBuilder();
-        String temp;
-        if(!queue.isEmpty())
-            str.append(queue.pop().symbol);
-
-        while(!queue.isEmpty()){
-            str.append(" ").append(queue.pop().symbol);
-        }
-
-        while(!stack.isEmpty()){
-            str.append(" ").append(stack.pop().symbol);
-        }
-
-        if(str.toString().length()>0) {
-            ONPExpression onp = new ONPExpression(str.toString());
-            return onp.getTreeExpression();
-        }else
-            throw new RuntimeException("Wrong Expression! Can't build function!");
-    }
-    private boolean isNotWhiteLine(String s){
-        boolean b = true;
-        for(char x : s.toCharArray()){
-            b = b && !Character.isWhitespace(x);
-        }
-        return b;
-    }
     /**build function from String*/
     private Symbol buildFun(String fun){
         Sym sym = new Sym(fun,0);
@@ -122,33 +95,110 @@ public class FunctionTree {
                 /* create symbol with its priority and sigh */
                 FunctionSymbol c = new FunctionSymbol(sym.symbol);
                 /* if symbol is an operator */
-                if (c.sign == 'o' || c.sign == 't') {
+                if (c.sign == 'o' || c.sign == 'x') {
                     if (!stack.isEmpty() && stack.peek().priority > c.priority) {
-                        while (stack.peek().priority > c.priority)
+                        while (!stack.isEmpty() && stack.peek().priority > c.priority)
                             queue.addLast(stack.pop());
                     }
                     stack.push(c);
-                } else
+                } else if (c.sign == '('){
+                    sym.setIndex(addBracketExpression(fun, sym.index, queue));
+                }
+                else if (c.sign != ')')
                     queue.addLast(c);
             }
         }
-        return make_ONP(stack, queue);
+
+        return createFunctionTree(stack, queue);
+    }
+    /**add a function from brackets to queue*/
+    private int addBracketExpression(String fun,int index, ArrayDeque<FunctionSymbol> q){
+        Sym sym = new Sym(fun,index);
+        Stack<FunctionSymbol> stack = new Stack<>();
+        ArrayDeque<FunctionSymbol> queue = new ArrayDeque<>();
+
+        while(sym.index < fun.length()) {
+            /* update sym.symbol and sym.priority */
+            getSymbol(sym);
+            if (!sym.symbol.equals("") && sym.symbol != null && isNotWhiteLine(sym.symbol)) {
+                /* create symbol with its priority and sigh */
+                FunctionSymbol c = new FunctionSymbol(sym.symbol);
+                /* if symbol is an operator */
+                if (c.sign == 'o' || c.sign == 'x') {
+                    if (!stack.isEmpty() && stack.peek().priority > c.priority) {
+                        while (!stack.isEmpty() && stack.peek().priority > c.priority)
+                            queue.addLast(stack.pop());
+                    }
+                    stack.push(c);
+                } else if (c.sign == '('){
+                    sym.setIndex(addBracketExpression(fun, sym.index, queue));
+                } else if (c.sign == ')')
+                    break;
+                else {
+                    queue.addLast(c);
+                }
+            }
+        }
+
+        while (!queue.isEmpty()){
+            q.addLast(queue.pop());
+        }
+        while (!stack.isEmpty()){
+            q.addLast(stack.pop());
+        }
+
+        return sym.index;
+    }
+    /**build a string with ONPexpression from stack and queue*/
+    private String make_ONP(Stack<FunctionSymbol> stack, ArrayDeque<FunctionSymbol> queue ){
+        StringBuilder str = new StringBuilder();
+
+        if(!queue.isEmpty())
+            str.append(queue.pop().symbol);
+
+        while(!queue.isEmpty()){
+            str.append(" ").append(queue.pop().symbol);
+        }
+
+        while(!stack.isEmpty()){
+            str.append(" ").append(stack.pop().symbol);
+        }
+
+        return str.toString();
+    }
+    /**create function as Symbol from String from make_ONP*/
+    private Symbol createFunctionTree(Stack<FunctionSymbol> stack, ArrayDeque<FunctionSymbol> queue){
+        String str = make_ONP(stack,queue);
+
+        if(str.length()>0) {
+            ONPExpression onp = new ONPExpression(str);
+            return onp.getTreeExpression();
+        }else
+            throw new RuntimeException("Wrong Expression! Can't build function!");
+    }
+    /**check if 's' is a line with only white characters*/
+    private boolean isNotWhiteLine(String s){
+        boolean b = true;
+        for(char x : s.toCharArray()){
+            b = b && !Character.isWhitespace(x);
+        }
+        return b;
     }
     /**check a sign of the Symbol getting by getSymbol*/
-    char getSign(char a){
+    private char getSign(char a){
         if(a>='0' && a<='9')
             return 'n';
         else if (Character.isWhitespace(a))
             return 'e';
         else if(a>='a' && a<='z' || a>='A' && a<='Z')
-            return 't';
+            return 'x';
         else if(a=='(' || a==')')
-            return 'b';
+            return a;
         /* operator */
         return 'o';
     }
     /**return a next symbol from string*/
-    private Sym getSymbol(Sym str){
+    private void getSymbol(Sym str){
         StringBuilder toReturn = new StringBuilder();
 
         int i = str.index;
@@ -169,17 +219,11 @@ public class FunctionTree {
 
         str.setIndex(i);
         str.setSymbol(toReturn.toString());
-
-        return str;
     }
     /**calculate function*/
     public double calc() throws ONP_Exception { return fun.calc(); }
     /**represent function as String*/
-    @Override public String toString() {
-        return fun.toString();
-    }
+    @Override public String toString() { return fun.toString(); }
     /**represent function as String with value*/
-    public String toString2() {
-        return fun.toString2();
-    }
+    public String toString2() { return fun.toString2(); }
 }

@@ -7,6 +7,7 @@ public class Pow extends TwoArgs {
 
     public Pow (Symbol a1, Symbol a2){
         super(a1,a2,5);
+        name ="^";
     }
     public Pow() {
         super(5);

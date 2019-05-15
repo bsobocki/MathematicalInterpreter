@@ -13,7 +13,7 @@ public abstract class TwoArgs extends Function {
     TwoArgs(int priority){
         super(priority);
     }
-    TwoArgs(Symbol arg1, Symbol arg2,int priority){
+    TwoArgs(Symbol arg1, Symbol arg2, int priority){
         super(priority);
         this.arg1 = arg1;
         this.arg2 = arg2;

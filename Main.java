@@ -3,6 +3,7 @@ import calculator_interpreter.CalcInterpreter;
 import derivative_interpreter.Derivative;
 import derivative_interpreter.DerivativeInterpreter;
 import function.FunctionTree;
+import function.symbol.function.Function;
 import interpreter.Interpreter;
 
 import java.util.regex.Matcher;
@@ -14,9 +15,6 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    public static void printHelp(){
-        System.out.println("");
-    }
 
    public static void main(String[] args ){
        /*
@@ -59,4 +57,8 @@ public class Main {
                        "interpreter");
        interpreter.interpreter();
    }
+
+    public static void printHelp(){
+        System.out.println("");
+    }
 }
