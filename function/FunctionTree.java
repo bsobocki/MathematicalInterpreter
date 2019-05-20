@@ -3,14 +3,27 @@ package function;
 import ONP_interpreter.ONPExpression;
 import ONP_interpreter.exceptions.ONP_Exception;
 import function.symbol.*;
+import interpreter.collections.Set;
+
 import java.util.ArrayDeque;
 import java.util.Stack;
 
 public class FunctionTree {
     private Symbol fun;
+    private Set vars;
+    private Set unknownValues;
 
     //CONSTRUCTOR
-    public FunctionTree(String fun) { this.fun = buildFun(fun); }
+    public FunctionTree(String fun) {
+        vars = new Set();
+        unknownValues = new Set();
+        this.fun = buildFun(fun);
+    }
+    public FunctionTree(String fun, Set vars, Set unknownVals){
+        this.vars = vars;
+        this.unknownValues = unknownVals;
+        this.fun = buildFun(fun);
+    }
 
     //GETTERS
     public Symbol getFun() { return fun; }
@@ -88,31 +101,12 @@ public class FunctionTree {
         Stack<FunctionSymbol> stack = new Stack<>();
         ArrayDeque<FunctionSymbol> queue = new ArrayDeque<>();
 
-        while(sym.index < fun.length()) {
-            /* update sym.symbol and sym.priority */
-            getSymbol(sym);
-            if (!sym.symbol.equals("") && sym.symbol != null && isNotWhiteLine(sym.symbol)) {
-                /* create symbol with its priority and sigh */
-                FunctionSymbol c = new FunctionSymbol(sym.symbol);
-                /* if symbol is an operator */
-                if (c.sign == 'o' || c.sign == 'x') {
-                    if (!stack.isEmpty() && stack.peek().priority > c.priority) {
-                        while (!stack.isEmpty() && stack.peek().priority > c.priority)
-                            queue.addLast(stack.pop());
-                    }
-                    stack.push(c);
-                } else if (c.sign == '('){
-                    sym.setIndex(addBracketExpression(fun, sym.index, queue));
-                }
-                else if (c.sign != ')')
-                    queue.addLast(c);
-            }
-        }
+        sym.setIndex(addExpression(fun, sym.index, queue));
 
         return createFunctionTree(stack, queue);
     }
     /**add a function from brackets to queue*/
-    private int addBracketExpression(String fun,int index, ArrayDeque<FunctionSymbol> q){
+    private int addExpression(String fun,int index, ArrayDeque<FunctionSymbol> q){
         Sym sym = new Sym(fun,index);
         Stack<FunctionSymbol> stack = new Stack<>();
         ArrayDeque<FunctionSymbol> queue = new ArrayDeque<>();
@@ -124,14 +118,17 @@ public class FunctionTree {
                 /* create symbol with its priority and sigh */
                 FunctionSymbol c = new FunctionSymbol(sym.symbol);
                 /* if symbol is an operator */
-                if (c.sign == 'o' || c.sign == 'x') {
+                String s = symbolFromText(sym.symbol);
+                if (s.equals("1arg") || s.equals("2arg")){
                     if (!stack.isEmpty() && stack.peek().priority > c.priority) {
                         while (!stack.isEmpty() && stack.peek().priority > c.priority)
                             queue.addLast(stack.pop());
                     }
                     stack.push(c);
+                } else if (c.sign == '='){
+                    stack.push(c);
                 } else if (c.sign == '('){
-                    sym.setIndex(addBracketExpression(fun, sym.index, queue));
+                    sym.setIndex(addExpression(fun, sym.index, queue));
                 } else if (c.sign == ')')
                     break;
                 else {
@@ -170,8 +167,11 @@ public class FunctionTree {
     private Symbol createFunctionTree(Stack<FunctionSymbol> stack, ArrayDeque<FunctionSymbol> queue){
         String str = make_ONP(stack,queue);
 
+        System.out.println(str);
+
         if(str.length()>0) {
-            ONPExpression onp = new ONPExpression(str);
+            ONPExpression onp = new ONPExpression(vars,str);
+            vars = onp.getSet();
             return onp.getTreeExpression();
         }else
             throw new RuntimeException("Wrong Expression! Can't build function!");
@@ -191,8 +191,8 @@ public class FunctionTree {
         else if (Character.isWhitespace(a))
             return 'e';
         else if(a>='a' && a<='z' || a>='A' && a<='Z')
-            return 'x';
-        else if(a=='(' || a==')')
+            return 't';
+        else if(a=='(' || a==')' || a=='=')
             return a;
         /* operator */
         return 'o';
@@ -220,8 +220,58 @@ public class FunctionTree {
         str.setIndex(i);
         str.setSymbol(toReturn.toString());
     }
+    /**check what text is*/
+    private String symbolFromText(String text){
+        switch (text) {
+            /*constatent*/
+            case "e":
+            case "pi":
+            case "phi":
+                return "const";
+
+            /*function 1-arg*/
+            case "abs":
+            case "atan":
+            case "ceil":
+            case "cos":
+            case "exp":
+            case "floor":
+            case "ln":
+            case "sgn":
+            case "sin":
+                return "1arg";
+
+            /*function 2-args*/
+            case "+":
+            case "-":
+            case "/":
+            case "*":
+            case "^":
+            case "log":
+            case "max":
+            case "min":
+            case "pow":
+                return "2arg";
+
+            /*assign*/
+            case "=":
+                return "assign";
+
+            /*variable*/
+            default:
+                return "var";
+        }
+
+    }
     /**calculate function*/
     public double calc() throws ONP_Exception { return fun.calc(); }
+
+    //SETTERS
+    public void setVars(Set v) { vars = v; }
+
+    //GETTERS
+    public Set getUnknownValues() { return unknownValues; }
+    public Set getVars() { return vars; }
     /**represent function as String*/
     @Override public String toString() { return fun.toString(); }
     /**represent function as String with value*/
