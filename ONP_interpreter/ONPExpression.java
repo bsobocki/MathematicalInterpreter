@@ -17,16 +17,21 @@ public class ONPExpression {
     private Symbol treeExpression;
 
     /**constructors*/
-    public ONPExpression() throws ONP_Exception{
+    ONPExpression() throws ONP_Exception{
         set = new Set();
         expr = new List();
+    }
+    public ONPExpression(Set vars, String onp) throws ONP_Exception{
+        set = vars;
+        expr = new List();
+        setExpression(onp);
     }
     public ONPExpression(String onp) throws ONP_Exception{
         set = new Set();
         expr = new List();
         setExpression(onp);
     }
-    public void setExpression(String onp) throws ONP_Exception {
+    void setExpression(String onp) throws ONP_Exception {
         expr = onp_symbols_prefix(onp);
         treeExpression = build();
     }
@@ -134,6 +139,7 @@ public class ONPExpression {
                         min.addArg(build());
                         return min;
                     case "pow":
+                    case "^":
                         Pow pow = new Pow();
                         pow.addArg(build());
                         pow.addArg(build());
@@ -141,9 +147,9 @@ public class ONPExpression {
                     /*assign*/
                     case "=":
                         Assign a = new Assign();
-                        a.addArg1(new Variable(expr.remove(),0));
                         Symbol c = build();
                         a.addArg(c);
+                        a.addArg1(new Variable(expr.remove(),0));
                         set = a.assign(set);
                         return c;
 
@@ -151,8 +157,9 @@ public class ONPExpression {
                     default:
                         if(set.get(x)!=null)
                             return new Variable(x,set.get(x));
-                        else
-                            throw new ONP_UnknownSymbol();
+                        else {
+                            return new Unknown(x);
+                        }
                 }
         }
         else
@@ -161,7 +168,7 @@ public class ONPExpression {
     }
 
     /**calculate expression*/
-    public double calculate(){
+    double calculate(){
         return treeExpression.calc();
     }
 
