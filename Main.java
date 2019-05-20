@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class Main {
 
 
-   public static void main(String[] args ){
+   public static void main(String[] args ) throws Exception {
        /*
         *create an anonymous class implements Interpreter by lambda abstraction
         *call static function "interpreter" in "interpreter"'s method  body
@@ -58,7 +58,7 @@ public class Main {
        interpreter.interpreter();
    }
 
-    public static void printHelp(){
+    private static void printHelp(){
         System.out.println("");
     }
 }
