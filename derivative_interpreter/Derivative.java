@@ -7,37 +7,46 @@ import function.symbol.function.oneArg.*;
 import function.symbol.function.twoArgs.*;
 import function.symbol.operand.*;
 import function.symbol.operand.Number;
+import interpreter.collections.Set;
 
 public class Derivative {
     /**function representation*/
     private double value;
     private String representation;
-    private Symbol function;
+    private FunctionTree function;
     private Symbol derivative;
+    private String var;
 
     //CONSTRUCTORS
-    public Derivative() {
-        function = null;
-        derivative = null;
-        value = 0;
-        representation = null;
+    public Derivative() throws Exception {
+        setFunction("40+2");
+        var = "";
     }
-    public Derivative(String f) throws Exception {
+    public Derivative(String f, String var) throws Exception {
         setFunction(f);
+        setVar(var);
     }
     //GETTERS
     public double getValue() { return value; }
     public Symbol getDerivative() { return derivative; }
-    public Symbol getFunction() { return function; }
+    public FunctionTree getFunctionTree() { return function; }
+    public Symbol getFunction() { return function.getFun(); }
     //SETTERS
-    void setFunction(String f) throws Exception{
-        function = new FunctionTree(f).getFun();
-        derivative = buildDer(function);
+    public void setFunction(String f) throws Exception{
+        Set vars = new Set();
+        Set unknown = new Set();
+        if (function!=null) {
+            vars = function.getVars();
+            unknown = function.getUnknownValues();
+        }
+        function = new FunctionTree(f,vars,unknown);
+        derivative = buildDer(function.getFun());
         value = derivative.calc();
         representation = derivative.toString();
     }
+    void setVar(String var) { this.var = var; }
     //BUILDERS
-    /**derivative reprezentation of the function as value*/
+    /**derivative reprezentation of the function as Symbol */
     private Symbol buildDer(Symbol function) throws Exception {
         //Null
         if (function==null)
@@ -49,8 +58,15 @@ public class Derivative {
         if (function.getClass().isAssignableFrom(Constant.class))
             return new Number(0);
         //Variable
-        if (function.getClass().isAssignableFrom(Variable.class))
-            return new Number(1);
+        if (function.getClass().isAssignableFrom(Variable.class)) {
+            if(function.toString().equals(var))
+                return new Number(1) ;
+            else
+                return new Unknown(function.toString());
+        }
+        //Unknown
+        if (function.getClass().isAssignableFrom(Unknown.class))
+            return function;
         //oneArg
         if (function.getClass().isAssignableFrom(OneArg.class))
             return build1ArgDer((OneArg)function);
@@ -101,23 +117,31 @@ public class Derivative {
         //Power
         else if(function.getClass().isAssignableFrom(Pow.class)){
             //( x^g )' = x^(g-1)(x*log(x)*g' + g)
-            if(f.getClass().isAssignableFrom(Variable.class))
-                return new Multiply(
-                        new Plus(
-                                g,
-                                new Multiply(
-                                        f,
-                                        new Multiply(
-                                                new Log(
-                                                        new E(),
-                                                        f),
-                                                buildDer(g)))),
-                        new Pow(
-                                f,
-                                new Minus(
-                                        g,
-                                        new Number(1))));
-            //( e^f )' = e^g * g'
+            if(f.getClass().isAssignableFrom(Variable.class)) {
+                if (g.getClass().isAssignableFrom(Unknown.class) || (g.getClass().isAssignableFrom(Unknown.class))) {
+                    return new Multiply(
+                            new Minus(
+                                    g,
+                                    new Number(1)),
+                            f);
+                } else
+                    return new Multiply(
+                            new Plus(
+                                    g,
+                                    new Multiply(
+                                            f,
+                                            new Multiply(
+                                                    new Log(
+                                                            new E(),
+                                                            f),
+                                                    buildDer(g)))),
+                            new Pow(
+                                    f,
+                                    new Minus(
+                                            g,
+                                            new Number(1))));
+                //( e^g )' = e^g * g'
+            }
             else if (f.getClass().isAssignableFrom(E.class))
                 return new Multiply(
                         new Pow(f,g) ,
