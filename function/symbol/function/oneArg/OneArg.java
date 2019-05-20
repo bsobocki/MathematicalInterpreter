@@ -9,11 +9,13 @@ public abstract class OneArg extends Function {
     int numOfArgs = 0;
 
     public OneArg() {
-        super(5);
+        super(6);
+        _class = 'o';
     }
     public OneArg(Symbol arg){
         super(5);
         this.arg = arg;
+        _class = 'o';
     }
 
     void check() throws ONP_Exception {

@@ -6,8 +6,8 @@ public class Number extends Operand {
     private double val;
 
     public Number(double val){
-        super(5);
         this.val = val;
+        _class = 'n';
     }
 
     public double getVal() {

@@ -7,14 +7,14 @@ import function.symbol.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Variable extends Symbol {
+public class Variable extends Operand {
     private String name;
     private double val;
     private static Set vars = new Set();
 
     public Variable(String name, double v){
-        super(5);
         val = v;
+        _class = 'v';
         Pattern pat = Pattern.compile("\\p{Alpha}\\p{Alnum}*");
         Matcher mat = pat.matcher(name);
         if(mat.matches()) {

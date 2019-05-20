@@ -7,9 +7,7 @@ public abstract class Function extends Symbol implements Functional {
 
     protected String name;
 
-    public Function(int priority) {
-        super(priority);
-    }
+    public Function(int priority) { super(priority); }
 
     @Override
     public String toString2() {

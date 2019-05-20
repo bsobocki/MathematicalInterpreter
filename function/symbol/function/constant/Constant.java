@@ -4,7 +4,8 @@ import function.symbol.Symbol;
 
 public abstract class Constant extends Symbol{
     public Constant() {
-        super(5);
+        super(6);
+        _class = 'c';
     }
 
     @Override
