@@ -105,6 +105,7 @@ public class FunctionTree {
 
         return createFunctionTree(stack, queue);
     }
+
     /**add a function from brackets to queue*/
     private int addExpression(String fun,int index, ArrayDeque<FunctionSymbol> q){
         Sym sym = new Sym(fun,index);
@@ -146,6 +147,7 @@ public class FunctionTree {
 
         return sym.index;
     }
+
     /**build a string with ONPexpression from stack and queue*/
     private String make_ONP(Stack<FunctionSymbol> stack, ArrayDeque<FunctionSymbol> queue ){
         StringBuilder str = new StringBuilder();
@@ -163,11 +165,10 @@ public class FunctionTree {
 
         return str.toString();
     }
+
     /**create function as Symbol from String from make_ONP*/
     private Symbol createFunctionTree(Stack<FunctionSymbol> stack, ArrayDeque<FunctionSymbol> queue){
         String str = make_ONP(stack,queue);
-
-        System.out.println(str);
 
         if(str.length()>0) {
             ONPExpression onp = new ONPExpression(vars,str);
@@ -176,6 +177,7 @@ public class FunctionTree {
         }else
             throw new RuntimeException("Wrong Expression! Can't build function!");
     }
+
     /**check if 's' is a line with only white characters*/
     private boolean isNotWhiteLine(String s){
         boolean b = true;
@@ -184,6 +186,7 @@ public class FunctionTree {
         }
         return b;
     }
+
     /**check a sign of the Symbol getting by getSymbol*/
     private char getSign(char a){
         if(a>='0' && a<='9')
@@ -197,6 +200,7 @@ public class FunctionTree {
         /* operator */
         return 'o';
     }
+
     /**return a next symbol from string*/
     private void getSymbol(Sym str){
         StringBuilder toReturn = new StringBuilder();
@@ -220,6 +224,7 @@ public class FunctionTree {
         str.setIndex(i);
         str.setSymbol(toReturn.toString());
     }
+
     /**check what text is*/
     private String symbolFromText(String text){
         switch (text) {
@@ -263,6 +268,7 @@ public class FunctionTree {
         }
 
     }
+
     /**calculate function*/
     public double calc() throws ONP_Exception { return fun.calc(); }
 
@@ -272,8 +278,10 @@ public class FunctionTree {
     //GETTERS
     public Set getUnknownValues() { return unknownValues; }
     public Set getVars() { return vars; }
+
     /**represent function as String*/
     @Override public String toString() { return fun.toString(); }
+
     /**represent function as String with value*/
     public String toString2() { return fun.toString2(); }
 }

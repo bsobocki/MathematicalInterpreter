@@ -56,6 +56,14 @@ public class Main {
                        /*the name of the Interpreter */
                        "interpreter");
        interpreter.interpreter();
+
+       Derivative der = new Derivative();
+       der.setFunction("x = 3 ");
+       der.setVar("x");
+       der.getFunctionTree().getVars().write();
+       System.out.println(der);
+       der.setFunction("2*x+x^2+3*n");
+       System.out.println(der);
    }
 
     private static void printHelp(){

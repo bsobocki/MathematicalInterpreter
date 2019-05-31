@@ -26,11 +26,13 @@ public class Derivative {
         setFunction(f);
         setVar(var);
     }
+
     //GETTERS
     public double getValue() { return value; }
     public Symbol getDerivative() { return derivative; }
     public FunctionTree getFunctionTree() { return function; }
     public Symbol getFunction() { return function.getFun(); }
+
     //SETTERS
     public void setFunction(String f) throws Exception{
         Set vars = new Set();
@@ -44,7 +46,7 @@ public class Derivative {
         value = derivative.calc();
         representation = derivative.toString();
     }
-    void setVar(String var) { this.var = var; }
+    public void setVar(String var) { this.var = var; }
     //BUILDERS
     /**derivative reprezentation of the function as Symbol */
     private Symbol buildDer(Symbol function) throws Exception {
@@ -232,7 +234,7 @@ public class Derivative {
     //REPRESENTATION AS STRING
     /**derivative representation of the function as string*/
     @Override public String toString() {
-        return representation;
+        return derivative.toString();
     }
     public String toString2(){
         return representation + " = " + value;
