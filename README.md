@@ -8,7 +8,7 @@ Name of the current interpreter will be displayed.
 
 For example at the beggining you can show:
 
-**[interpreter]:** `this is the place to write a command`
+> **[interpreter]:** `this is the place to write a command`
 
 
 ## Commands
