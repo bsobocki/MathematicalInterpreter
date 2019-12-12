@@ -1,5 +1,5 @@
 # MathematicalInterpreter
-Calculator of some expressions (like postfix expressions or derivatives) and commands interpreter.
+Calculator for some expressions (such as postfix expressions or functions derivatives) and interpreter of commands related to derivatives and ONP expressions.
 
 ## How to use
 Write commands. 
